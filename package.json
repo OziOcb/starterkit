@@ -34,7 +34,6 @@
     "critical": "^1.3.4",
     "flexboxgrid": "^6.3.1",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-beautify": "^2.0.0",
     "gulp-concat": "^2.6.0",
@@ -53,9 +52,11 @@
     "vinyl-ftp": "^0.6.0"
   },
   "devDependencies": {
+    "autoprefixer": "^9.0.2",
     "babel-core": "^6.17.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.18.0",
+    "gulp-postcss": "^7.0.1",
+    "rucksack-css": "^1.0.2",
     "xo": "^0.21.1"
   }
 }

@@ -9,7 +9,7 @@ import plumber from 'gulp-plumber'
 import notify from 'gulp-notify'
 import imagemin from 'gulp-imagemin'
 import rename from 'gulp-rename'
-import autoprefixer from 'gulp-autoprefixer'
+import autoprefixer from 'autoprefixer'
 import uglify from 'gulp-uglify'
 import ftp from 'vinyl-ftp'
 import surge from 'gulp-surge'
@@ -20,6 +20,9 @@ import uncss from 'gulp-uncss'
 import cssmin from 'gulp-cssnano'
 import sourcemaps from 'gulp-sourcemaps'
 import critical from 'critical'
+
+import postcss from 'gulp-postcss'
+import rucksack from 'rucksack-css'
 
 /* baseDirs: baseDirs for the project */
 
@@ -101,6 +104,10 @@ gulp.task('templates', () => {
 // SCSS
 
 gulp.task('styles', () => {
+	let plugins = [
+		autoprefixer({browsers: ['last 2 version']}),
+		rucksack()
+	];
 	return gulp.src(routes.styles.scss)
 		.pipe(plumber({
 			errorHandler: notify.onError({
@@ -112,7 +119,7 @@ gulp.task('styles', () => {
 		.pipe(sass({
 			outputStyle: 'compressed'
 		}))
-		.pipe(autoprefixer('last 3 versions'))
+		.pipe(postcss(plugins))
 		.pipe(sourcemaps.write())
 		.pipe(cssimport({}))
 		.pipe(rename('style.css'))
