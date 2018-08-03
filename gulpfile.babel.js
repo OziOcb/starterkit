@@ -57,8 +57,8 @@ const routes = {
 		images: `${baseDirs.src}images/*`,
 		imgmin: `${baseDirs.dist}assets/files/img/`,
 		cssFiles: `${baseDirs.dist}assets/css/*.css`,
-		htmlFiles: `${baseDirs.dist}assets/*.html`,
-		styleCss: `${baseDirs.dist}css/style.css`
+		htmlFiles: `${baseDirs.dist}*.html`,
+		styleCss: `${baseDirs.dist}assets/css/style.css`
 	},
 
 	deployDirs: {
