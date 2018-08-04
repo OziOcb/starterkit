@@ -217,7 +217,8 @@ gulp.task('beautify', () => {
 
 gulp.task('serve', () => {
 	browserSync.init({
-		server: './dist/'
+		server: './dist/',
+		browser: "google chrome"
 	});
 
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
