@@ -42,8 +42,8 @@ const routes = {
 	},
 
 	templates: {
-		pug: `${baseDirs.src}templates/*.pug`,
-		_pug: `${baseDirs.src}templates/_includes/*.pug`
+		pug: `${baseDirs.src}templates/*.+(pug|html)`,
+		_pug: `${baseDirs.src}templates/_includes/*.+(pug|html)`
 	},
 
 	scripts: {

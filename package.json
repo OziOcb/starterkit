@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/carloscuesta/starterkit#readme",
   "dependencies": {
+    "bootstrap": "^4.1.3",
     "browser-sync": "^2.17.0",
     "critical": "^1.3.4",
     "flexboxgrid": "^6.3.1",
