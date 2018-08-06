@@ -24,6 +24,8 @@ import critical from 'critical'
 import postcss from 'gulp-postcss'
 import rucksack from 'rucksack-css'
 
+import gulpif from 'gulp-if'
+
 /* baseDirs: baseDirs for the project */
 
 const baseDirs = {
@@ -48,8 +50,10 @@ const routes = {
 
 	scripts: {
 		base: `${baseDirs.src}scripts/`,
-		js: `${baseDirs.src}scripts/*.js`,
+		js: `${baseDirs.src}scripts/**/*.js`,
+		vendor: `${baseDirs.src}scripts/0-vendor/**/*.js`,
 		jsmin: `${baseDirs.dist}assets/js/`
+
 	},
 
 	files: {
@@ -134,7 +138,7 @@ gulp.task('styles', () => {
 /* Scripts (js) ES6 => ES5, minify and concat into a single file. */
 
 gulp.task('scripts', () => {
-	return gulp.src(routes.scripts.js)
+	return gulp.src([routes.scripts.vendor, routes.scripts.js])
 		.pipe(plumber({
 			errorHandler: notify.onError({
 				title: 'Error: Babel and Concat failed.',
@@ -142,8 +146,8 @@ gulp.task('scripts', () => {
 			})
 		}))
 		.pipe(sourcemaps.init())
+		.pipe(gulpif(!'popper.min.js', babel()))
 		.pipe(concat('script.js'))
-		.pipe(babel())
 		.pipe(uglify())
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(routes.scripts.jsmin))
