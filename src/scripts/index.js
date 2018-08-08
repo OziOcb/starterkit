@@ -1,1 +1,1 @@
-console.log('Helllllllo 3 2 0!!!');
+console.log('Helllllllo!!!');

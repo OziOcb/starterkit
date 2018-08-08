@@ -50,7 +50,7 @@ const routes = {
 
 	scripts: {
 		base: `${baseDirs.src}scripts/`,
-		js: `${baseDirs.src}scripts/**/*.js`,
+		js: `${baseDirs.src}scripts/*.js`,
 		vendor: `${baseDirs.src}scripts/0-vendor/**/*.js`,
 		jsmin: `${baseDirs.dist}assets/js/`
 
@@ -228,6 +228,7 @@ gulp.task('serve', () => {
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
 	gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
 	gulp.watch(routes.scripts.js, ['scripts', 'beautify']);
+	gulp.watch(routes.scripts.vendor, ['scripts']);
 });
 
 /* Remove unusued css */
