@@ -50,6 +50,7 @@
     "gulp-surge": "^0.1.0",
     "gulp-uglify": "^3.0.1",
     "gulp-uncss": "^1.0.6",
+    "jquery": "^3.3.1",
     "vinyl-ftp": "^0.6.0"
   },
   "devDependencies": {

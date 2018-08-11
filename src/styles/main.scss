@@ -1,5 +1,8 @@
-@import '_includes/_vendor/_custom';
-@import '_includes/_vendor/_bootstrap';
+// Bootstrap 4
+@import '_includes/_vendor/_bootstrap-custom';
+@import './node_modules/bootstrap/scss/bootstrap';
+
+// Other
 @import '_includes/_vars';
 @import '_includes/_mixins';
 

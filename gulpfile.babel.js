@@ -15,7 +15,6 @@ import ftp from 'vinyl-ftp'
 import surge from 'gulp-surge'
 import babel from 'gulp-babel'
 import cssimport from 'gulp-cssimport'
-import beautify from 'gulp-beautify'
 import uncss from 'gulp-uncss'
 import cssmin from 'gulp-cssnano'
 import sourcemaps from 'gulp-sourcemaps'
@@ -24,13 +23,12 @@ import critical from 'critical'
 import postcss from 'gulp-postcss'
 import rucksack from 'rucksack-css'
 
-import gulpif from 'gulp-if'
-
 /* baseDirs: baseDirs for the project */
 
 const baseDirs = {
 	dist: 'dist/',
 	src: 'src/',
+	node: 'node_modules/',
 	assets: 'dist/assets/'
 };
 
@@ -51,7 +49,8 @@ const routes = {
 	scripts: {
 		base: `${baseDirs.src}scripts/`,
 		js: `${baseDirs.src}scripts/*.js`,
-		vendor: `${baseDirs.src}scripts/0-vendor/**/*.js`,
+		jquery: `${baseDirs.node}jquery/dist/jquery.slim.min.js`,
+		bootstrap: `${baseDirs.node}bootstrap/dist/js/bootstrap.bundle.min.js`,
 		jsmin: `${baseDirs.dist}assets/js/`
 
 	},
@@ -136,9 +135,11 @@ gulp.task('styles', () => {
 });
 
 /* Scripts (js) ES6 => ES5, minify and concat into a single file. */
+/* Adds Jquery and Bootstrap 4 JS files -
+	- remove them if you are not plannig to use BS4 */
 
 gulp.task('scripts', () => {
-	return gulp.src([routes.scripts.vendor, routes.scripts.js])
+	return gulp.src([routes.scripts.jquery, routes.scripts.bootstrap, routes.scripts.js])
 		.pipe(plumber({
 			errorHandler: notify.onError({
 				title: 'Error: Babel and Concat failed.',
@@ -146,7 +147,7 @@ gulp.task('scripts', () => {
 			})
 		}))
 		.pipe(sourcemaps.init())
-		.pipe(gulpif(!'popper.min.js', babel()))
+		.pipe(babel())
 		.pipe(concat('script.js'))
 		.pipe(uglify())
 		.pipe(sourcemaps.write())
@@ -199,24 +200,6 @@ gulp.task('surge', () => {
 	});
 });
 
-/* Preproduction beautifiying task (SCSS, JS) */
-
-gulp.task('beautify', () => {
-	return gulp.src(routes.scripts.js)
-		.pipe(beautify({indentSize: 4}))
-		.pipe(plumber({
-			errorHandler: notify.onError({
-				title: 'Error: Beautify failed.',
-				message: '<%= error.message %>'
-			})
-		}))
-		.pipe(gulp.dest(routes.scripts.base))
-	.pipe(notify({
-		title: 'JS Beautified!',
-		message: 'beautify task completed.'
-	}));
-});
-
 /* Serving (browserSync) and watching for changes in files */
 
 gulp.task('serve', () => {
@@ -227,8 +210,7 @@ gulp.task('serve', () => {
 
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
 	gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
-	gulp.watch(routes.scripts.js, ['scripts', 'beautify']);
-	gulp.watch(routes.scripts.vendor, ['scripts']);
+	gulp.watch(routes.scripts.js, ['scripts']);
 });
 
 /* Remove unusued css */
