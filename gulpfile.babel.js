@@ -262,9 +262,9 @@ gulp.task('critical', () => {
 			}));
 });
 
-gulp.task('dev', ['templates', 'styles', 'scripts', 'images', 'serve']);
+gulp.task('dev', ['templates', 'styles', 'scripts', 'serve']);
 
-gulp.task('build', ['templates', 'styles', 'scripts', 'images']);
+gulp.task('build', ['templates', 'styles', 'scripts']);
 
 gulp.task('optimize', ['uncss', 'critical', 'images']);
 
