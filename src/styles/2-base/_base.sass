@@ -1,0 +1,108 @@
+//   Box sizing
+html
+  box-sizing: border-box
+
+*, *::after, *::before
+  box-sizing: inherit
+
+//    Typography
+html
+  font-size: 62.5%
+
+.gigantic, .huge, .large, .bigger, .big,
+h1, h2, h3, h4, h5, h6
+  color: $accent-color
+  font-weight: bold
+
+.gigantic
+  font-size: 11rem
+  line-height: 1.09
+  letter-spacing: -2px
+
+.huge, h1
+  font-size: 6.8rem
+  line-height: 1.05
+  letter-spacing: -1px
+  font-family: 'Quicksand', sans-serif;
+  color: #fff
+
+.large, h2
+  font-size: 4.2rem
+  line-height: 1.14
+  font-family: 'Quicksand', sans-serif;
+
+.bigger, h3
+  font-size: 2.6rem
+  line-height: 1.38
+
+.big, h4
+  font-size: 2.2rem
+  line-height: 1.38
+
+.small, small
+  font-size: 1rem
+  line-height: 1.2
+
+p
+  margin: 0 0 2rem 0
+
+em
+  font-style: italic
+
+strong
+  font-weight: bold
+
+hr
+  border: solid #ddd
+  border-width: 1px 0 0
+  clear: both
+  margin: 1rem 0 3rem
+  height: 0
+
+
+
+// Links
+
+a
+  color: $link-color
+  text-decoration: none
+  outline: 0
+
+a:hover, a:focus
+  color: $outline-color
+
+
+
+// Selection colors (easy to forget)
+
+::selection
+  background: $selection-color
+
+::-moz-selection
+  background: $selection-color
+
+img::selection
+  background: transparent
+
+img::-moz-selection
+  background: transparent
+
+body
+  -webkit-tap-highlight-color: $selection-color
+
+
+
+// Basic Styles
+
+html,
+body
+  min-height: 100vh
+
+body
+  background: $bg-color
+  font-size: 1.6rem
+  line-height: 1.6
+  font-family: 'Quicksand', sans-serif
+  color: $text-color
+  -webkit-font-smoothing: antialiased
+  -webkit-text-size-adjust: 100%

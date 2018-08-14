@@ -37,7 +37,7 @@ const baseDirs = {
 const routes = {
 	styles: {
 		scss: `${baseDirs.src}styles/*.scss`,
-		_scss: `${baseDirs.src}styles/_includes/*.scss`,
+		_scss: `${baseDirs.src}styles/**/*.+(scss|sass)`,
 		css: `${baseDirs.dist}assets/css/`
 	},
 
