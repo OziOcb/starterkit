@@ -14,7 +14,7 @@ import uglify from 'gulp-uglify'
 import ftp from 'vinyl-ftp'
 import surge from 'gulp-surge'
 import babel from 'gulp-babel'
-import cssimport from 'gulp-cssimport'
+// import cssimport from 'gulp-cssimport'
 import uncss from 'gulp-uncss'
 import cssmin from 'gulp-cssnano'
 import sourcemaps from 'gulp-sourcemaps'
@@ -123,9 +123,9 @@ gulp.task('styles', () => {
 			outputStyle: 'compressed'
 		}))
 		.pipe(postcss(plugins))
-		.pipe(sourcemaps.write())
-		.pipe(cssimport({}))
+		// .pipe(cssimport({}))
 		.pipe(rename('style.css'))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(routes.styles.css))
 		.pipe(browserSync.stream())
 		.pipe(notify({
@@ -150,7 +150,7 @@ gulp.task('scripts', () => {
 		.pipe(babel())
 		.pipe(concat('script.js'))
 		.pipe(uglify())
-		.pipe(sourcemaps.write())
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(routes.scripts.jsmin))
 		.pipe(browserSync.stream())
 		.pipe(notify({
