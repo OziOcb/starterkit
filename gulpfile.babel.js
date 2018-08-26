@@ -22,22 +22,25 @@ import critical from 'critical'
 
 import postcss from 'gulp-postcss'
 import rucksack from 'rucksack-css'
+import child from 'child_process'
+import gutil from 'gulp-util'
 
 /* baseDirs: baseDirs for the project */
 
 const baseDirs = {
-	dist: 'dist/',
-	src: 'src/',
+	dist: '_site/',
+	src: 'assets/',
 	node: 'node_modules/',
-	assets: 'dist/assets/'
+	assets: '_site/assets/'
 };
 
 /* routes: object that contains the paths */
 
 const routes = {
 	styles: {
-		scss: `${baseDirs.src}styles/*.scss`,
-		_scss: `${baseDirs.src}styles/**/*.+(scss|sass)`,
+		base: `${baseDirs.src}css/`,
+		scss: `${baseDirs.src}css/*.scss`,
+		_scss: `${baseDirs.src}css/**/*.+(scss|sass)`,
 		css: `${baseDirs.dist}assets/css/`
 	},
 
@@ -47,8 +50,8 @@ const routes = {
 	},
 
 	scripts: {
-		base: `${baseDirs.src}scripts/`,
-		js: `${baseDirs.src}scripts/*.js`,
+		base: `${baseDirs.src}js/`,
+		js: `${baseDirs.src}js/main/*.js`,
 		jquery: `${baseDirs.node}jquery/dist/jquery.slim.min.js`,
 		bootstrap: `${baseDirs.node}bootstrap/dist/js/bootstrap.bundle.min.js`,
 		jsmin: `${baseDirs.dist}assets/js/`
@@ -56,7 +59,7 @@ const routes = {
 	},
 
 	files: {
-		html: 'dist/',
+		html: '_site/',
 		images: `${baseDirs.src}images/*`,
 		imgmin: `${baseDirs.dist}assets/files/img/`,
 		cssFiles: `${baseDirs.dist}assets/css/*.css`,
@@ -85,24 +88,59 @@ const surgeInfo = {
 
 /* Compiling Tasks */
 
+var messages = {
+	jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
+};
+
+// Jekyll
+
+// gulp.task('jekyll', () => {
+//   const jekyll = child.spawn('jekyll', [
+//     'build',
+//     // '--watch',
+//     // '--incremental',
+//     // '--drafts'
+//   ]);
+//   const jekyllLogger = (buffer) => {
+//     buffer.toString()
+//       .split(/\n/)
+//       .forEach((message) => gutil.log('Jekyll: ' + message));
+//   };
+//   jekyll.stdout.on('data', jekyllLogger);
+//   jekyll.stderr.on('data', jekyllLogger);
+// });
+
+gulp.task('jekyll-build', function (done) {
+	browserSync.notify(messages.jekyllBuild);
+	return child.spawn('jekyll', ['build'], {stdio: 'inherit'})
+			.on('close', done);
+});
+
+/**
+ * Rebuild Jekyll & do page reload when watched files change
+ */
+gulp.task('jekyll-rebuild', ['jekyll-build'], function () {
+	browserSync.reload();
+});
+
 // pug
 
-gulp.task('templates', () => {
-	return gulp.src([routes.templates.pug, '!' + routes.templates._pug])
-		.pipe(plumber({
-			errorHandler: notify.onError({
-				title: 'Error: Compiling pug.',
-				message: '<%= error.message %>'
-			})
-		}))
-		.pipe(pug())
-		.pipe(gulp.dest(routes.files.html))
-		.pipe(browserSync.stream())
-		.pipe(notify({
-			title: 'Pug Compiled succesfully!',
-			message: 'Pug task completed.'
-		}));
-});
+// gulp.task('templates', () => {
+// 	return gulp.src([routes.templates.pug, '!' + routes.templates._pug])
+// 		.pipe(plumber({
+// 			errorHandler: notify.onError({
+// 				title: 'Error: Compiling pug.',
+// 				message: '<%= error.message %>'
+// 			})
+// 		}))
+// 		.pipe(pug())
+// 		.pipe(gulp.dest(routes.files.html))
+// 		.pipe(browserSync.stream())
+// 		.pipe(notify({
+// 			title: 'Pug Compiled succesfully!',
+// 			message: 'Pug task completed.'
+// 		}));
+// });
 
 // SCSS
 
@@ -118,16 +156,17 @@ gulp.task('styles', () => {
 				message: '<%= error.message %>'
 			})
 		}))
+		.pipe(rename('style.css'))
 		.pipe(sourcemaps.init())
 		.pipe(sass({
 			outputStyle: 'compressed'
 		}))
 		.pipe(postcss(plugins))
 		// .pipe(cssimport({}))
-		.pipe(rename('style.css'))
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(routes.styles.css))
 		.pipe(browserSync.stream())
+		.pipe(gulp.dest(routes.styles.base))
 		.pipe(notify({
 			title: 'SCSS Compiled and Minified succesfully!',
 			message: 'scss task completed.'
@@ -153,6 +192,7 @@ gulp.task('scripts', () => {
 		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(routes.scripts.jsmin))
 		.pipe(browserSync.stream())
+		.pipe(gulp.dest(routes.scripts.base))
 		.pipe(notify({
 			title: 'JavaScript Minified and Concatenated!',
 			message: 'your js files has been minified and concatenated.'
@@ -167,7 +207,7 @@ gulp.task('images', () => {
 		.pipe(gulp.dest(routes.files.imgmin));
 });
 
-/* Deploy, deploy dist/ files to an ftp server */
+/* Deploy, deploy _site/ files to an ftp server */
 
 gulp.task('ftp', () => {
 	const connection = ftp.create({
@@ -202,12 +242,14 @@ gulp.task('surge', () => {
 
 /* Serving (browserSync) and watching for changes in files */
 
-gulp.task('serve', () => {
+gulp.task('serve', ['jekyll-build'], () => {
 	browserSync.init({
-		server: './dist/',
+		server: './_site/',
 		browser: "google chrome"
 	});
 
+	// gulp.watch(['**/*.*', '!_site/**/*','!_assets/**/*','!node_modules/**/*','!.sass-cache/**/*' ], ['jekyll-rebuild']);
+	gulp.watch(['*.html', '_layouts/*.html', '_includes/*'], ['jekyll-rebuild']);
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
 	gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
 	gulp.watch(routes.scripts.js, ['scripts']);
@@ -350,7 +392,7 @@ gulp.task('critical', () => {
 			}));
 });
 
-gulp.task('dev', ['templates', 'styles', 'scripts', 'serve']);
+gulp.task('dev', [/* 'templates',  */'serve', 'styles', 'scripts'/* , 'jekyll-build' */]);
 
 gulp.task('build', ['templates', 'styles', 'scripts']);
 
