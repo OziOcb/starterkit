@@ -249,9 +249,9 @@ gulp.task('serve', ['jekyll-build'], () => {
 	});
 
 	// gulp.watch(['**/*.*', '!_site/**/*','!_assets/**/*','!node_modules/**/*','!.sass-cache/**/*' ], ['jekyll-rebuild']);
-	gulp.watch(['*.html', '_layouts/*.html', '_includes/*'], ['jekyll-rebuild']);
+	gulp.watch(['*.html', '_layouts/*.html', '_includes/*', '_posts/*'], ['jekyll-rebuild']);
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
-	gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
+	// gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
 	gulp.watch(routes.scripts.js, ['scripts']);
 });
 
