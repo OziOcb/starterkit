@@ -88,7 +88,7 @@ const surgeInfo = {
 
 /* Compiling Tasks */
 
-var messages = {
+const messages = {
 	jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
 };
 
@@ -110,7 +110,7 @@ var messages = {
 //   jekyll.stderr.on('data', jekyllLogger);
 // });
 
-gulp.task('jekyll-build', function (done) {
+gulp.task('jekyll-build', (done) => {
 	browserSync.notify(messages.jekyllBuild);
 	return child.spawn('jekyll', ['build'], {stdio: 'inherit'})
 			.on('close', done);
@@ -119,7 +119,7 @@ gulp.task('jekyll-build', function (done) {
 /**
  * Rebuild Jekyll & do page reload when watched files change
  */
-gulp.task('jekyll-rebuild', ['jekyll-build'], function () {
+gulp.task('jekyll-rebuild', ['jekyll-build'], () => {
 	browserSync.reload();
 });
 
