@@ -45,8 +45,9 @@ const routes = {
 	},
 
 	templates: {
-		pug: `${baseDirs.src}templates/*.+(pug|html)`,
-		_pug: `${baseDirs.src}templates/_includes/*.+(pug|html)`
+		pug: `_pug/*.+(pug|html)`,
+		_pug: `${baseDirs.src}templates/_includes/*.+(pug|html)`,
+		includes: `_includes/`
 	},
 
 	scripts: {
@@ -125,22 +126,23 @@ gulp.task('jekyll-rebuild', ['jekyll-build'], () => {
 
 // pug
 
-// gulp.task('templates', () => {
-// 	return gulp.src([routes.templates.pug, '!' + routes.templates._pug])
-// 		.pipe(plumber({
-// 			errorHandler: notify.onError({
-// 				title: 'Error: Compiling pug.',
-// 				message: '<%= error.message %>'
-// 			})
-// 		}))
-// 		.pipe(pug())
-// 		.pipe(gulp.dest(routes.files.html))
-// 		.pipe(browserSync.stream())
-// 		.pipe(notify({
-// 			title: 'Pug Compiled succesfully!',
-// 			message: 'Pug task completed.'
-// 		}));
-// });
+gulp.task('templates', () => {
+	return gulp.src([routes.templates.pug/* , '!' + routes.templates._pug */])
+		.pipe(plumber({
+			errorHandler: notify.onError({
+				title: 'Error: Compiling pug.',
+				message: '<%= error.message %>'
+			})
+		}))
+		.pipe(pug())
+		// .pipe(gulp.dest(routes.files.html))
+		.pipe(gulp.dest(routes.templates.includes))
+		.pipe(browserSync.stream())
+		.pipe(notify({
+			title: 'Pug Compiled succesfully!',
+			message: 'Pug task completed.'
+		}));
+});
 
 // SCSS
 
@@ -251,7 +253,7 @@ gulp.task('serve', ['jekyll-build'], () => {
 	// gulp.watch(['**/*.*', '!_site/**/*','!_assets/**/*','!node_modules/**/*','!.sass-cache/**/*' ], ['jekyll-rebuild']);
 	gulp.watch(['*.html', '_layouts/*.html', '_includes/*', '_posts/*'], ['jekyll-rebuild']);
 	gulp.watch([routes.styles.scss, routes.styles._scss], ['styles']);
-	// gulp.watch([routes.templates.pug, routes.templates._pug], ['templates']);
+	gulp.watch([routes.templates.pug/* , routes.templates._pug */], ['templates']);
 	gulp.watch(routes.scripts.js, ['scripts']);
 });
 
@@ -392,7 +394,7 @@ gulp.task('critical', () => {
 			}));
 });
 
-gulp.task('dev', [/* 'templates',  */'serve', 'styles', 'scripts'/* , 'jekyll-build' */]);
+gulp.task('dev', ['serve', 'templates', 'styles', 'scripts'/* , 'jekyll-build' */]);
 
 gulp.task('build', ['templates', 'styles', 'scripts']);
 
