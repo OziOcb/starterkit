@@ -43,3 +43,14 @@ exclude:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# Compress HTML files
+# The following items are used by a jekyll-compress-html plugin.
+# You can find it in the _layout/compress.html file, were you will
+# find a link to the documentacion
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  profile: true
+  startings: [head, body]
