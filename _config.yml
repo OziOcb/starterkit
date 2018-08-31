@@ -53,4 +53,3 @@ compress_html:
   comments: all
   endings: all
   profile: true
-  startings: [head, body]
