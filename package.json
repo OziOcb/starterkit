@@ -1,7 +1,9 @@
 {
-  "name": "carloscuesta-starterkit",
+  "name": "OziOcb_starterkit",
   "version": "1.0.0",
-  "description": "Carlos Cuesta web starterkit, including my workflow with gulp, jade, scss, babel and nodejs",
+  "description": "OziOcb web starterkit",
+  "author": "OziOcb",
+  "copyright": "OziOcb",
   "main": "gulpfile.js",
   "xo": {
     "esnext": true
@@ -16,19 +18,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carloscuesta/starterkit.git"
+    "url": "git+https://github.com/OziOcb/starterkit"
   },
   "keywords": [
-    "carlos cuesta",
+    "OziOcb",
     "starterkit",
     "workflow"
   ],
-  "author": "Carlos Cuesta",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/carloscuesta/starterkit/issues"
+    "url": "https://github.com/OziOcb/starterkit/issues"
   },
-  "homepage": "https://github.com/carloscuesta/starterkit#readme",
+  "homepage": "https://github.com/OziOcb/starterkit#readme",
   "dependencies": {
     "bootstrap": "^4.1.3",
     "browser-sync": "^2.17.0",
