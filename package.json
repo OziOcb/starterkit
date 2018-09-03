@@ -41,6 +41,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-cssimport": "^6.0.1",
     "gulp-cssnano": "^2.1.2",
+    "gulp-htmlmin": "^4.0.0",
     "gulp-imagemin": "^4.1.0",
     "gulp-notify": "^3.0.0",
     "gulp-plumber": "^1.1.0",
@@ -60,7 +61,9 @@
     "babel-preset-env": "^1.7.0",
     "gulp-if": "^2.0.2",
     "gulp-postcss": "^7.0.1",
+    "gulp-real-favicon": "^0.3.0",
     "rucksack-css": "^1.0.2",
+    "run-sequence": "^2.2.1",
     "xo": "^0.21.1"
   }
 }
