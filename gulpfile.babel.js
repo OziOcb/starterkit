@@ -406,6 +406,12 @@ gulp.task('critical', () => {
 // File where the favicon markups are stored
 const FAVICON_DATA_FILE = 'faviconData.json';
 
+// For the best effect, (you need to do this only once)
+// first go to this site https://realfavicongenerator.net
+// submit your master picture, then select settings for different
+// devices and click 'Generate your favicon..'. Go to the Gulp tab
+// and swap the 'design: {...}' part of the 'generate-favicon' task
+// with the same part in the task below.
 // Generate the icons. This task takes a few seconds to complete.
 // You should run it at least once to create the icons. Then,
 // you should run it whenever RealFaviconGenerator updates its
@@ -417,7 +423,9 @@ gulp.task('generate-favicon', (done) => {
 		iconsPath: '/assets/images/icons/',
 		design: {
 			ios: {
-				pictureAspect: 'noChange',
+				pictureAspect: 'backgroundAndMargin',
+				backgroundColor: '#ffffff',
+				margin: '14%',
 				assets: {
 					ios6AndPriorIcons: false,
 					ios7AndLaterIcons: false,
@@ -428,7 +436,7 @@ gulp.task('generate-favicon', (done) => {
 			desktopBrowser: {},
 			windows: {
 				pictureAspect: 'noChange',
-				backgroundColor: '#da532c',
+				backgroundColor: '#2b5797',
 				onConflict: 'override',
 				assets: {
 					windows80Ie10Tile: false,
@@ -441,9 +449,10 @@ gulp.task('generate-favicon', (done) => {
 				}
 			},
 			androidChrome: {
-				pictureAspect: 'noChange',
+				pictureAspect: 'shadow',
 				themeColor: '#ffffff',
 				manifest: {
+					name: 'OcbStarterKit',
 					display: 'standalone',
 					orientation: 'notSet',
 					onConflict: 'override',
@@ -455,7 +464,8 @@ gulp.task('generate-favicon', (done) => {
 				}
 			},
 			safariPinnedTab: {
-				pictureAspect: 'silhouette',
+				pictureAspect: 'blackAndWhite',
+				threshold: 76.5625,
 				themeColor: '#5bbad5'
 			}
 		},
@@ -467,7 +477,7 @@ gulp.task('generate-favicon', (done) => {
 			usePathAsIs: false
 		},
 		markupFile: FAVICON_DATA_FILE
-	}, () => {
+	}, function() {
 		done();
 	});
 });
