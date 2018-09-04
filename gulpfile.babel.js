@@ -28,6 +28,7 @@ import gutil from 'gulp-util'
 import realFavicon from 'gulp-real-favicon'
 import fs from 'fs'
 import runSequence from 'run-sequence'
+import cache from 'gulp-cache'
 
 /* baseDirs: baseDirs for the project */
 
@@ -65,8 +66,9 @@ const routes = {
 
 	files: {
 		html: '_site/',
-		images: `${baseDirs.src}images/*`,
-		imgmin: `${baseDirs.dist}assets/files/img/`,
+		images: `${baseDirs.src}images/**/*.+(png|jpg|jpeg|gif|svg)`,
+		favicons: `${baseDirs.src}images/icons/*.+(png|jpg|jpeg|gif|svg)`,
+		imgmin: `${baseDirs.dist}assets/images/`,
 		cssFiles: `${baseDirs.dist}assets/css/*.css`,
 		htmlFiles: `${baseDirs.dist}*.html`,
 		styleCss: `${baseDirs.dist}assets/css/style.css`
@@ -208,8 +210,10 @@ gulp.task('scripts', () => {
 /* Image compressing task */
 
 gulp.task('images', () => {
-	gulp.src(routes.files.images)
-		.pipe(imagemin())
+	gulp.src([routes.files.images, '!' + routes.files.favicons])
+		.pipe(cache(imagemin({
+			interlaced: true
+		})))
 		.pipe(gulp.dest(routes.files.imgmin));
 });
 
