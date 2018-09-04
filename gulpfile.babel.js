@@ -29,6 +29,7 @@ import realFavicon from 'gulp-real-favicon'
 import fs from 'fs'
 import runSequence from 'run-sequence'
 import cache from 'gulp-cache'
+import htmlmin from 'gulp-htmlmin'
 
 /* baseDirs: baseDirs for the project */
 
@@ -210,7 +211,7 @@ gulp.task('scripts', () => {
 /* Image compressing task */
 
 gulp.task('images', () => {
-	gulp.src([routes.files.images, '!' + routes.files.favicons])
+	return gulp.src([routes.files.images, '!' + routes.files.favicons])
 		.pipe(cache(imagemin({
 			interlaced: true
 		})))
@@ -395,6 +396,7 @@ gulp.task('critical', () => {
 					message: '<%= error.message %>'
 				})
 			}))
+			.pipe(htmlmin({collapseWhitespace: true}))
 			.pipe(gulp.dest(baseDirs.dist))
 			.pipe(notify({
 				title: 'Critical Path completed!',
@@ -477,7 +479,7 @@ gulp.task('generate-favicon', (done) => {
 			usePathAsIs: false
 		},
 		markupFile: FAVICON_DATA_FILE
-	}, function() {
+	}, () => {
 		done();
 	});
 });
@@ -505,14 +507,16 @@ gulp.task('check-for-favicon-update', (done) => {
 });
 
 gulp.task('dev', (callback) => {
-	runSequence('templates', 'styles', 'scripts', 'serve', 'inject-favicon-markups', /* , 'jekyll-build', */ callback)
+	runSequence('templates', 'styles', 'scripts', 'serve', callback)
 });
 
-gulp.task('build', ['templates', 'styles', 'scripts']);
+gulp.task('optimize', (callback) => {
+	runSequence('inject-favicon-markups', ['uncss', 'critical', 'images'], callback)
+});
 
-gulp.task('optimize', ['uncss', 'critical', 'images']);
-
-gulp.task('deploy', ['optimize', 'surge']);
+gulp.task('deploy', (callback) => {
+	runSequence('optimize', 'surge', callback)
+});
 
 gulp.task('default', () => {
 	gulp.start('dev');
