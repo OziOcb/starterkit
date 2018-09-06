@@ -396,7 +396,22 @@ gulp.task('critical', () => {
 					message: '<%= error.message %>'
 				})
 			}))
-			.pipe(htmlmin({collapseWhitespace: true}))
+			.pipe(htmlmin({
+				collapseWhitespace: true,
+				collapseBooleanAttributes: true,
+				decodeEntities: true,
+				html5: true,
+				minifyCSS: true,
+				// minifyJS: true,
+				processConditionalComments: true,
+				removeAttributeQuotes: true,
+				removeComments: true,
+				removeEmptyAttributes: true,
+				removeOptionalTags: true,
+				removeRedundantAttributes: true,
+				removeScriptTypeAttributes: true,
+				removeStyleLinkTypeAttributes: true,
+			}))
 			.pipe(gulp.dest(baseDirs.dist))
 			.pipe(notify({
 				title: 'Critical Path completed!',

@@ -50,6 +50,6 @@ exclude:
 # find a link to the documentacion
 compress_html:
   clippings: all
-  comments: all
+  comments: false
   endings: all
-  profile: true
+  profile: false
