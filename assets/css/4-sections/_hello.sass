@@ -3,9 +3,10 @@
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
-  font-size: 9rem
+  font-size: responsive 4rem 9rem
   color: #426c79
   text-shadow: 0px 0px 15px rgba(255,255,255,.7)
+  z-index: 1
 
   &:before
     content: ''
@@ -19,15 +20,5 @@
     z-index: -1
     box-shadow: 0px 0px 15px rgba(98, 57, 33, .9)
 
-body
-  background: #111111
-  color: #fff
-
-.wielkieElo
-  background: lightblue
-  border: 2px solid green
-  border-radius: 20%
-  box-shadow: 2px 2px 12px rgba(#f00, 0.5)
-  font-size: 5rem !important
-  text-align: center
-  margin-bottom: 80px
+.carousel-item__img
+  height: 100vh
